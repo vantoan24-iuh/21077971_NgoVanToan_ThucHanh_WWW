@@ -6,11 +6,11 @@
     <title>Document</title>
 </head>
 <body>
-<form action="controller" method="get">
-    <input type="hidden" name="action" value="add"><br>
-    <input  name="name" > <br>
-    <input  name="desc" > <br>
-    <input  name="img" > <br>
+<form action="controller" method="POST">
+    <input type="hidden" name="action" value="add">
+    <input type="text"   name="name" placeholder="name">
+    <input type="text"   name="description" placeholder="description">
+    <input type="text" name="imgPath" placeholder="imgPath">
 
     <input type="submit" value="Insert">
     <input type="reset" value="Reset">

@@ -10,6 +10,7 @@ public class AccountServices {
     private AccountRepository accountRepository;
     private RoleRepository roleRepository;
 
+
     public AccountServices() {
         this.accountRepository = new AccountRepositoryImp();
         roleRepository = new RoleRepositoryImp();
@@ -19,9 +20,7 @@ public boolean addAccount(Account account) {
         if (check(account)) {
             return false;
         } else {
-            accountRepository.save(account);
-
-
+            accountRepository.add(account);
             return true;
         }
     }

@@ -1,6 +1,7 @@
 package vn.edu.iuh.fit.lab_week1.entities;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -16,9 +17,11 @@ public class GrantAccess {
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
+    @ColumnDefault("b'1'")
     @Column(name = "is_grant", nullable = false)
     private Boolean isGrant = false;
 
+    @ColumnDefault("''")
     @Column(name = "note", length = 250)
     private String note;
 

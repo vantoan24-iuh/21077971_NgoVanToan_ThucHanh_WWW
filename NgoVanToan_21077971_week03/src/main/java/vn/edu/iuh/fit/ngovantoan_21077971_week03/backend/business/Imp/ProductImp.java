@@ -1,19 +1,20 @@
-package vn.edu.iuh.fit.backend.business.Imp;
+package vn.edu.iuh.fit.ngovantoan_21077971_week03.backend.business.Imp;
 
+import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.PersistenceContext;
-import vn.edu.iuh.fit.backend.business.ProductBeanRemote;
-import vn.edu.iuh.fit.backend.repository.entities.Product;
+import vn.edu.iuh.fit.ngovantoan_21077971_week03.backend.business.ProductBeanRemote;
+import vn.edu.iuh.fit.ngovantoan_21077971_week03.backend.repository.entities.Product;
 
 import java.util.List;
 
+@Stateless
 public class ProductImp implements ProductBeanRemote {
     @PersistenceContext(unitName = "mariadb")
     private EntityManager entityManager;
 
     public ProductImp() {
-//        entityManager = Persistence.createEntityManagerFactory("mariadb").createEntityManager();
     }
 
     @Override
@@ -24,7 +25,6 @@ public class ProductImp implements ProductBeanRemote {
     @Override
     public void updateProduct(Product product) {
         entityManager.merge(product);
-
     }
 
     @Override
@@ -48,7 +48,7 @@ public class ProductImp implements ProductBeanRemote {
         return entityManager.createNamedQuery("Product.findAll",Product.class).getResultList();
     }
     @Override
-    public Product getProductById(int id) {
+    public Object getProductById(int id) {
         return entityManager.find(Product.class, id);
     }
 }

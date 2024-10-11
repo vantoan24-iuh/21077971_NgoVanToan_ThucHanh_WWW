@@ -1,14 +1,21 @@
 package vn.edu.iuh.fit.lab_week1.entities;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Table(name = "account")
 @NamedQueries({
+        @NamedQuery(
+                name = "Account.findAccountByIdPassword",
+                query = "select a from Account a where a.accountId = :accountId and a.password = :password"
+        ),
+        @NamedQuery(
+                name = "Account.findAccountsByRole",
+                query = "select a from Account a join GrantAccess ga on a.accountId = ga.id.accountId where ga.id.roleId = :roleId"
+        ),
         @NamedQuery(name = "Account.findAll", query = "select a from Account a"),
-        @NamedQuery(name = "Account.findByAccountIdOrderByAccountIdAsc", query = "select a from Account a where a.accountId = :accountId order by a.accountId")
-//        @NamedQuery(name = "Account.findByRoleId", query = "select a from Account a inner join GrantAccess ga on a.accountId = ga.account.accountId inner join Role r on ga.role.roleId = r.roleId where r.roleId = :roleId"),
-
+        @NamedQuery(name = "Account.findByAccountIdOrderByAccountIdAsc", query = "select a from Account a where a.accountId = :accountId order by a.accountId asc")
 })
 public class Account {
     @Id
@@ -27,6 +34,7 @@ public class Account {
     @Column(name = "phone", length = 50)
     private String phone;
 
+    @ColumnDefault("1")
     @Column(name = "status", nullable = false)
     private Byte status;
 

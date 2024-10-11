@@ -26,7 +26,7 @@ public class AccountRepositoryImp implements AccountRepository {
     @Override
     public Account findById(String id) {
         try {
-            return entityManager.createNamedQuery("Account.findByAccountId", Account.class).setParameter("accountId", id).getSingleResult();
+            return entityManager.createNamedQuery("Account.findByAccountIdOrderByAccountIdAsc", Account.class).setParameter("accountId", id).getSingleResult();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -40,26 +40,55 @@ public class AccountRepositoryImp implements AccountRepository {
 
     @Override
     public List<Account> findAccountByRoleId(String roleName) {
+
         return List.of();
     }
 
     @Override
     public boolean exists(String id) {
+        try {
+            return entityManager.createNamedQuery("Account.findByAccountIdOrderByAccountIdAsc", Account.class).setParameter("accountId", id).getSingleResult() != null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return false;
     }
 
     @Override
-    public void save(Account account) {
-
+    public void add(Account account) {
+        try {
+            entityTransaction.begin();
+            entityManager.persist(account);
+            entityTransaction.commit();
+        } catch (Exception e) {
+            entityTransaction.rollback();
+            e.printStackTrace();
+        }
     }
-
     @Override
     public Account update(Account account) {
+        try {
+            entityTransaction.begin();
+            entityManager.merge(account);
+            entityTransaction.commit();
+        } catch (Exception e) {
+            entityTransaction.rollback();
+            e.printStackTrace();
+        }
         return null;
     }
 
     @Override
     public boolean delete(Account account) {
+        try {
+            entityTransaction.begin();
+            entityManager.remove(account);
+            entityTransaction.commit();
+            return true;
+        } catch (Exception e) {
+            entityTransaction.rollback();
+            e.printStackTrace();
+        }
         return false;
     }
 }

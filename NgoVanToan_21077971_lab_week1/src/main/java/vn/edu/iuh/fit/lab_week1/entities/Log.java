@@ -1,15 +1,12 @@
 package vn.edu.iuh.fit.lab_week1.entities;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
 
 @Entity
 @Table(name = "log")
-@NamedQueries({
-        @NamedQuery(name = "Log.findById", query = "select l from Log l where l.id = :id")
-})
-
 public class Log {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,12 +16,15 @@ public class Log {
     @Column(name = "account_id", nullable = false, length = 50)
     private String accountId;
 
+    @ColumnDefault("current_timestamp()")
     @Column(name = "login_time", nullable = false)
     private Instant loginTime;
 
+    @ColumnDefault("current_timestamp()")
     @Column(name = "logout_time", nullable = false)
     private Instant logoutTime;
 
+    @ColumnDefault("''")
     @Column(name = "notes", nullable = false, length = 250)
     private String notes;
 

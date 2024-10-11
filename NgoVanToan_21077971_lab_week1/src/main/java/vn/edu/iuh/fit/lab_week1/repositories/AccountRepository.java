@@ -10,7 +10,7 @@ public interface AccountRepository {
     public List<Account> findAccountByRoleName(String roleName);
     public List<Account> findAccountByRoleId(String roleName);
     public boolean exists(String id);
-    public void save(Account account);
+    public void add(Account account);
     public Account update(Account account);
     public boolean delete(Account account);
 }

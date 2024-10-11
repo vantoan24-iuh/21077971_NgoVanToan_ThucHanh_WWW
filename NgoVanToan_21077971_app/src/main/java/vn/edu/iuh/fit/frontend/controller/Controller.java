@@ -22,13 +22,17 @@ public class Controller extends HttpServlet {
             String name = req.getParameter("name");
             String description = req.getParameter("description");
             String imgPath = req.getParameter("imgPath");
-            productModel.createProduct(new Product(name, description, imgPath));
+
+            Product product = new Product(name, description, imgPath);
+            productModel.createProduct(product);
+            resp.sendRedirect("formProduct.jsp");
+
         }
 
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        doGet(req, resp);
     }
 }
