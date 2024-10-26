@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
+             version="3.0">
+    <persistence-unit name="mariadb" transaction-type="JTA">
+        <jta-data-source>jdbc/_thuoc</jta-data-source>
+<!--        duong dan entities-->
+        <class>vn.edu.iuh.fit.exercise.backend.repositories.entities.Loaithuoc</class>
+        <class>vn.edu.iuh.fit.exercise.backend.repositories.entities.Thuoc</class>
+    </persistence-unit>
+</persistence>
