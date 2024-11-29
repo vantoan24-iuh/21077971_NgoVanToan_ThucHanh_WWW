@@ -32,6 +32,8 @@ public class Address implements java.io.Serializable {
     @Column(name = "zipcode", length = 7)
     private String zipcode;
 
+
+
     public Address() {
     }
     public Address(Long id, String street, String city, String number, String zipcode, CountryCode country) {

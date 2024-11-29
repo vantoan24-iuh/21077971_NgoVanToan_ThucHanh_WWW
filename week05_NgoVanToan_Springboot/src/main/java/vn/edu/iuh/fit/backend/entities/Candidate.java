@@ -5,6 +5,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -31,6 +35,13 @@ public class Candidate {
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "address", nullable = false)
     private Address address;
+
+    @OneToMany(mappedBy = "can")
+    private List<CandidateSkill> candidateSkills = new ArrayList<>();
+
+    @OneToMany(mappedBy = "can")
+    private List<Experience> experiences = new ArrayList<>();
+
 
     public Candidate() {
     }
