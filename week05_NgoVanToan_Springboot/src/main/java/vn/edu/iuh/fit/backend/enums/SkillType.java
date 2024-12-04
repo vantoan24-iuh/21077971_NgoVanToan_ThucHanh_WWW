@@ -18,6 +18,15 @@ public enum SkillType {
         return value;
     }
 
+    public static SkillType fromValue(int value) {
+        for (SkillType type : SkillType.values()) {
+            if (type.getValue() == value) {
+                return type;
+            }
+        }
+        return null;
+    }
+
     @Override
     public String toString() {
         return "SkillType{" +

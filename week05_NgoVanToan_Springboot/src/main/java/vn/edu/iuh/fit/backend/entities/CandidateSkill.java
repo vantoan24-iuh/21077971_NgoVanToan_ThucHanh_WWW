@@ -1,5 +1,6 @@
 package vn.edu.iuh.fit.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,6 +26,12 @@ public class CandidateSkill {
     @Column(name = "skill_level", nullable = false)
     @Enumerated(EnumType.STRING)
     private SkillLevel skillLevel;
+
+    @MapsId("skillId")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "skill_id")
+    @JsonProperty("skill")
+    private Skill skill;
 
     public CandidateSkill() {
     }

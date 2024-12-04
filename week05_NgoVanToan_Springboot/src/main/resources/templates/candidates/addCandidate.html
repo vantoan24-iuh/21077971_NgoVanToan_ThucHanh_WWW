@@ -19,7 +19,7 @@ C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
 <body>
 <div class="container">
     <h1 class="text-center">Add Candidate</h1>
-    <form th:action="@{/candidates/add}" method="post">
+    <form th:action="@{/candidates/add}" th:object="${candidate}" method="post">
         <div class="form-group">
             <H2>Candidate</H2>
             <div class="row p-1">
@@ -98,13 +98,14 @@ C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
                 </div>
                 <div class="col-5 md-4">
                     <select name="country" id="country" th:field="${address.country}">
+                        <option value="" disabled selected>-- Select country --</option>
                         <option th:each="country: ${countries}" th:value="${country}" th:text="${country.name}">
                         </option>
                     </select>
                 </div>
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group" th:each="skill, indexStat : ${skills}">
             <!-- skill -->
             <H2>Skill</H2>
             <div class="row p-1">
@@ -113,11 +114,11 @@ C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
                 </div>
                 <div class="col-5 md-4">
                     <select name="skillType" id="skillType">
-                        <option value="1">UNSPECIFIC</option>
-                        <option value="2">TECHNICAL_SKILL</option>
-                        <option value="3">SOFT_SKILL</option>
-
+                        <option th:each="type : ${T(vn.edu.iuh.fit.backend.enums.SkillType).values()}"
+                                th:value="${type.value}"
+                                th:text="${type}"></option>
                     </select>
+
                 </div>
             </div>
             <div class="row p-1">
@@ -126,12 +127,46 @@ C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
                 </div>
                 <div class="col-5 md-4">
                     <select name="skillLevel" id="skillLevel">
-                        <option value="1">MASTER</option>
-                        <option value="2">PROFESSIONAL</option>
-                        <option value="3">ADVANCED</option>
-                        <option value="4">INTERMEDIATE</option>
-                        <option value="5">BEGINNER</option>
+                        <option th:each="level : ${T(vn.edu.iuh.fit.backend.enums.SkillLevel).values()}"
+                                th:value="${level.value}" th:text="${level}">
+                        </option>
+
                     </select>
+                </div>
+            </div>
+        </div>
+        <div class="row" aria-label="Experience">
+            <h3 class="col-sm-1 mt-3">Experience</h3>
+            <div class="row mb-3">
+                <label for="company" class="col-sm-1 col-form-label">Company</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="company" th:field="${experience.companyName}">
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label for="from-date" class="col-sm-1 col-form-label">From Date</label>
+                <div class="col-sm-10">
+                    <input type="date" class="form-control" id="from-date" th:field="${experience.fromDate}">
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label for="to-date" class="col-sm-1 col-form-label">To Date</label>
+                <div class="col-sm-10">
+                    <input type="date" class="form-control" id="to-date" th:field="${experience.toDate}">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="role" class="col-sm-1 col-form-label">Role</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="role" th:field="${experience.role}">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="work-desc" class="col-sm-1 col-form-label">Work description</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="work-desc" th:field="${experience.workDescription}">
                 </div>
             </div>
         </div>

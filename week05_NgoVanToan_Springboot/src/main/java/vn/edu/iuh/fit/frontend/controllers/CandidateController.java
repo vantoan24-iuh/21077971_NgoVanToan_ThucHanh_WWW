@@ -5,12 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import vn.edu.iuh.fit.backend.entities.Address;
 import vn.edu.iuh.fit.backend.entities.Candidate;
+import vn.edu.iuh.fit.backend.entities.Experience;
+import vn.edu.iuh.fit.backend.respositories.AddressRepository;
 import vn.edu.iuh.fit.backend.respositories.CandidateRepository;
 import vn.edu.iuh.fit.backend.services.imp.CandidateService;
 import vn.edu.iuh.fit.backend.services.imp.CandidateSkillServices;
@@ -32,7 +32,11 @@ public class CandidateController {
     private CandidateService candidateServices;
 
     @Autowired
+    private AddressRepository addressRepository;
+
+    @Autowired
     private SkillService skillService;
+
 
     @GetMapping("/list")
     public String showCandidateList(Model model) {
@@ -40,7 +44,7 @@ public class CandidateController {
         return "candidates/candidates";
     }
 
-    @GetMapping("/candidates")
+    @GetMapping("")
     public String showCandidateListPaging(Model model,
                                           @RequestParam("page") java.util.Optional<Integer> page,
                                           @RequestParam("size") Optional<Integer> size) {
@@ -64,12 +68,43 @@ public class CandidateController {
         ModelAndView mav = new ModelAndView("candidates/addCandidate");
         Candidate candidate = new Candidate();
         candidate.setAddress(new Address());
+        Experience experience = new Experience();
         candidate.setCandidateSkills(new ArrayList<>());
+//        candidate.setExperiences(new ArrayList<>());
         mav.addObject("candidate", candidate);
         mav.addObject("address",candidate.getAddress());
         mav.addObject("countries", CountryCode.values());
         mav.addObject("skills", skillService.getAllSkills());
+        mav.addObject("experience", experience);
 
         return mav;
+    }
+
+    @GetMapping("form-update-candidate/{id}")
+    public ModelAndView showFormEditCandidate(Model model, @PathVariable("id") Long id) {
+        ModelAndView mav = new ModelAndView("candidates/update-candidates");
+        Optional<Candidate> candidate = candidateRepository.findById(id);
+        if(candidate.isPresent()) {
+            mav.addObject("candidate", candidate.get());
+            mav.addObject("address", candidate.get().getAddress());
+            mav.addObject("countries", CountryCode.values());
+        }
+        return mav;
+    }
+
+    @PostMapping("edit")
+    public String editCandidate(@ModelAttribute("candidate") Candidate candidate
+            , @ModelAttribute("address") Address address) {
+        addressRepository.save(address);
+        candidate.setAddress(address);
+        candidateRepository.save(candidate);
+        return "redirect:/candidates/list";
+    }
+
+    @GetMapping("delete/{id}")
+    public String deleteCandidate(@PathVariable("id") Long id) {
+        Candidate candidate = candidateRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid candidate Id:" + id));
+        candidateRepository.delete(candidate);
+        return "redirect:/candidates/list";
     }
 }

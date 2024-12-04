@@ -37,10 +37,10 @@ public class Candidate {
     private Address address;
 
     @OneToMany(mappedBy = "can")
-    private List<CandidateSkill> candidateSkills = new ArrayList<>();
+    private List<CandidateSkill> candidateSkills;
 
     @OneToMany(mappedBy = "can")
-    private List<Experience> experiences = new ArrayList<>();
+    private List<Experience> experiences;
 
 
     public Candidate() {
