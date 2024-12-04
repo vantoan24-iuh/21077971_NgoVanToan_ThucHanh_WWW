@@ -38,4 +38,19 @@ public class Experience {
     @JoinColumn(name = "can_id")
     private Candidate can;
 
+    public Experience() {
+    }
+
+    @Override
+    public String toString() {
+        return "Experience{" +
+                "id=" + id +
+                ", toDate=" + toDate +
+                ", fromDate=" + fromDate +
+                ", companyName='" + companyName + '\'' +
+                ", workDescription='" + workDescription + '\'' +
+                ", role='" + role + '\'' +
+                ", can=" + can +
+                '}';
+    }
 }

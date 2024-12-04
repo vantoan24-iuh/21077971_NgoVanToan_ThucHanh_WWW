@@ -27,15 +27,15 @@ C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
                     <label for="name">FullName: </label>
                 </div>
                 <div class="col-5 md-4">
-                    <input type="text" name="name" id="name" class="form-control">
+                    <input type="text" name="name" id="name" class="form-control" th:field="*{fullName}">
                 </div>
             </div>
             <div class="row p-1">
                 <div class="col-3 md-3">
-                    <label for="mail">Email: </label>
+                    <label for="email">Email: </label>
                 </div>
                 <div class="col-5 md-4">
-                    <input type="text" name="mail" id="mail" class="form-control">
+                    <input type="email" name="email" id="email" class="form-control" required="required"  th:field="*{email}">
                 </div>
             </div>
 
@@ -44,7 +44,7 @@ C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
                     <label for="phone">Phone: </label>
                 </div>
                 <div class="col-5 md-4">
-                    <input type="text" name="phone" id="phone" class="form-control">
+                    <input type="text" name="phone" id="phone" class="form-control" th:field="*{phone}">
                 </div>
             </div>
             <div class="row p-1">
@@ -52,7 +52,7 @@ C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
                     <label for="dob">Dob: </label>
                 </div>
                 <div class="col-5 md-4">
-                    <input type="date" name="dob" id="dob" class="form-control">
+                    <input type="date" name="dob" id="dob" class="form-control" th:field="*{dob}">
                 </div>
             </div>
         </div>
@@ -64,7 +64,7 @@ C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
                     <label for="number">Number: </label>
                 </div>
                 <div class="col-5 md-4">
-                    <input type="text" name="number" id="number" class="form-control">
+                    <input type="text" name="number" id="number" class="form-control" th:field="${address.number}">
                 </div>
             </div>
             <div class="row p-1">
@@ -72,7 +72,7 @@ C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
                     <label for="street">Street: </label>
                 </div>
                 <div class="col-5 md-4">
-                    <input type="text" name="street" id="street" class="form-control">
+                    <input type="text" name="street" id="street" class="form-control" th:field="${address.street}">
                 </div>
             </div>
             <div class="row p-1">
@@ -80,7 +80,7 @@ C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
                     <label for="city">City: </label>
                 </div>
                 <div class="col-5 md-4">
-                    <input type="text" name="city" id="city" class="form-control">
+                    <input type="text" name="city" id="city" class="form-control" th:field="${address.city}">
                 </div>
 
             </div>
@@ -89,7 +89,7 @@ C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
                     <label for="zipcode">Zipcode: </label>
                 </div>
                 <div class="col-5 md-4">
-                    <input type="text" name="zipcode" id="zipcode" class="form-control">
+                    <input type="text" name="zipcode" id="zipcode" class="form-control" th:field="${address.zipcode}">
                 </div>
             </div>
             <div class="row p-1">
@@ -105,36 +105,37 @@ C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
                 </div>
             </div>
         </div>
-        <div class="form-group" th:each="skill, indexStat : ${skills}">
-            <!-- skill -->
-            <H2>Skill</H2>
-            <div class="row p-1">
-                <div class="col-3 md-3">
-                    <label for="skillType">SkillType: </label>
-                </div>
-                <div class="col-5 md-4">
-                    <select name="skillType" id="skillType">
-                        <option th:each="type : ${T(vn.edu.iuh.fit.backend.enums.SkillType).values()}"
-                                th:value="${type.value}"
-                                th:text="${type}"></option>
-                    </select>
+<!--        <div class="form-group">-->
+<!--            &lt;!&ndash; skill &ndash;&gt;-->
+<!--            <H2>Skill</H2>-->
+<!--            <div class="row p-1">-->
+<!--                <div class="col-3 md-3">-->
+<!--                    <label for="skillType">SkillType: </label>-->
+<!--                </div>-->
+<!--                <div class="col-5 md-4">-->
+<!--                    <select name="skillType" id="skillType">-->
+<!--                        <option value="1">UNSPECIFIC</option>-->
+<!--                        <option value="2">TECHNICAL_SKILL</option>-->
+<!--                        <option value="3">SOFT_SKILL</option>-->
 
-                </div>
-            </div>
-            <div class="row p-1">
-                <div class="col-3 md-3">
-                    <label for="skillLevel">SkillLevel: </label>
-                </div>
-                <div class="col-5 md-4">
-                    <select name="skillLevel" id="skillLevel">
-                        <option th:each="level : ${T(vn.edu.iuh.fit.backend.enums.SkillLevel).values()}"
-                                th:value="${level.value}" th:text="${level}">
-                        </option>
-
-                    </select>
-                </div>
-            </div>
-        </div>
+<!--                    </select>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="row p-1">-->
+<!--                <div class="col-3 md-3">-->
+<!--                    <label for="skillLevel">SkillLevel: </label>-->
+<!--                </div>-->
+<!--                <div class="col-5 md-4">-->
+<!--                    <select name="skillLevel" id="skillLevel">-->
+<!--                        <option value="1">MASTER</option>-->
+<!--                        <option value="2">PROFESSIONAL</option>-->
+<!--                        <option value="3">ADVANCED</option>-->
+<!--                        <option value="4">INTERMEDIATE</option>-->
+<!--                        <option value="5">BEGINNER</option>-->
+<!--                    </select>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
         <div class="row" aria-label="Experience">
             <h3 class="col-sm-1 mt-3">Experience</h3>
             <div class="row mb-3">
@@ -171,13 +172,9 @@ C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
             </div>
         </div>
         <div class="form-group">
-            <div class="row p-1">
-                <div class="col-3 md-3">
-                    <input type="submit" value="Submit" class="btn btn-primary">
-                </div>
-                <div class="col-5 md-4">
-                    <input type="reset" value="Reset" class="btn btn-primary">
-                </div>
+            <div class="d-flex gap-3 col-2 mx-auto">
+                <input class="btn btn-primary" type="submit" value="Add Candidate">
+                <a th:href="@{/candidates/list}" class="btn btn-outline-secondary">Cancel</a>
             </div>
         </div>
     </form>

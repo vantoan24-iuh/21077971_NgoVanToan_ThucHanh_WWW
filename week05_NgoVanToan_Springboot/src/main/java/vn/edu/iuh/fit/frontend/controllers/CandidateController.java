@@ -9,15 +9,18 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import vn.edu.iuh.fit.backend.entities.Address;
 import vn.edu.iuh.fit.backend.entities.Candidate;
+import vn.edu.iuh.fit.backend.entities.CandidateSkill;
 import vn.edu.iuh.fit.backend.entities.Experience;
 import vn.edu.iuh.fit.backend.respositories.AddressRepository;
 import vn.edu.iuh.fit.backend.respositories.CandidateRepository;
 import vn.edu.iuh.fit.backend.services.imp.CandidateService;
 import vn.edu.iuh.fit.backend.services.imp.CandidateSkillServices;
+import vn.edu.iuh.fit.backend.services.imp.ExperienceService;
 import vn.edu.iuh.fit.backend.services.imp.SkillService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -29,13 +32,19 @@ public class CandidateController {
     private CandidateRepository candidateRepository;
 
     @Autowired
-    private CandidateService candidateServices;
-
-    @Autowired
     private AddressRepository addressRepository;
 
     @Autowired
+    private CandidateService candidateServices;
+
+    @Autowired
     private SkillService skillService;
+
+    @Autowired
+    private CandidateSkillServices candidateSkillServices;
+
+    @Autowired
+    private ExperienceService experienceService;
 
 
     @GetMapping("/list")
@@ -50,8 +59,8 @@ public class CandidateController {
                                           @RequestParam("size") Optional<Integer> size) {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(10);
-        Page<Candidate> candidatePage= candidateServices.findAll(
-                currentPage - 1,pageSize,"id","asc");
+        Page<Candidate> candidatePage = candidateServices.findAll(
+                currentPage - 1, pageSize, "id", "asc");
         model.addAttribute("candidatePage", candidatePage);
         int totalPages = candidatePage.getTotalPages();
         if (totalPages > 0) {
@@ -72,7 +81,7 @@ public class CandidateController {
         candidate.setCandidateSkills(new ArrayList<>());
 //        candidate.setExperiences(new ArrayList<>());
         mav.addObject("candidate", candidate);
-        mav.addObject("address",candidate.getAddress());
+        mav.addObject("address", candidate.getAddress());
         mav.addObject("countries", CountryCode.values());
         mav.addObject("skills", skillService.getAllSkills());
         mav.addObject("experience", experience);
@@ -80,11 +89,42 @@ public class CandidateController {
         return mav;
     }
 
+    @PostMapping("/add")
+    public String addCandidate(@ModelAttribute("candidate") Candidate candidate,
+                               @ModelAttribute("address") Address address,
+                               @ModelAttribute("experience") Experience experience) {
+        // Khởi tạo danh sách nếu candidateSkills là null
+        if (candidate.getCandidateSkills() == null) {
+            candidate.setCandidateSkills(new ArrayList<>());
+        }
+        candidate.getCandidateSkills().removeIf(Objects::isNull);
+
+        addressRepository.save(address);
+        candidate.setAddress(address);
+        candidateRepository.save(candidate);
+
+        Candidate canbyEmail = candidateRepository.findByEmail(candidate.getEmail());
+        System.out.println(candidate.getCandidateSkills());
+
+        // Lưu từng CandidateSkill
+        for (CandidateSkill candidateSkill : candidate.getCandidateSkills()) {
+            if (candidateSkill.getSkill() != null && candidateSkill.getSkillLevel() != null) { // Kiểm tra null trước khi lưu
+                candidateSkill.setCan(canbyEmail);
+                candidateSkillServices.save(candidateSkill);
+            }
+        }
+
+        experience.setCan(canbyEmail);
+        experienceService.save(experience);
+
+        return "redirect:/candidates/list";
+    }
+
     @GetMapping("form-update-candidate/{id}")
     public ModelAndView showFormEditCandidate(Model model, @PathVariable("id") Long id) {
         ModelAndView mav = new ModelAndView("candidates/update-candidates");
         Optional<Candidate> candidate = candidateRepository.findById(id);
-        if(candidate.isPresent()) {
+        if (candidate.isPresent()) {
             mav.addObject("candidate", candidate.get());
             mav.addObject("address", candidate.get().getAddress());
             mav.addObject("countries", CountryCode.values());

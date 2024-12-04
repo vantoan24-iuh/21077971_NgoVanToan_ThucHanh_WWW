@@ -6,4 +6,5 @@ import vn.edu.iuh.fit.backend.entities.Candidate;
 
 @Repository
 public interface CandidateRepository extends JpaRepository<Candidate, Long> {
+    public Candidate findByEmail(String email);
 }
