@@ -1,18 +1,25 @@
+
 package vn.edu.iuh.fit.backend.entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 @Entity
+@SuperBuilder
 @Table(name = "company")
-public class Company {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comp_id", nullable = false)
-    private Long id;
+@PrimaryKeyJoinColumn(name = "com_id")
+public class Company extends User implements Serializable {
+
 
     @Column(name = "about", length = 2000)
     private String about;
@@ -29,23 +36,20 @@ public class Company {
     @Column(name = "web_url")
     private String webUrl;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @OneToOne(fetch = FetchType.EAGER, optional = false,cascade = CascadeType.ALL)
     @JoinColumn(name = "address", nullable = false)
     private Address address;
 
-    public Company() {
-    }
+    @OneToMany(mappedBy = "company")
+    @ToString.Exclude
+    private List<Job> jobs;
 
-    @Override
-    public String toString() {
-        return "Company{" +
-                "id=" + id +
-                ", about='" + about + '\'' +
-                ", email='" + email + '\'' +
-                ", compName='" + compName + '\'' +
-                ", phone='" + phone + '\'' +
-                ", webUrl='" + webUrl + '\'' +
-                ", address=" + address +
-                '}';
+
+    public Company(String about, String email, String compName, String phone, String webUrl) {
+        this.about = about;
+        this.email = email;
+        this.compName = compName;
+        this.phone = phone;
+        this.webUrl = webUrl;
     }
 }

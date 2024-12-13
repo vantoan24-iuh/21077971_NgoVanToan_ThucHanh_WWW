@@ -8,7 +8,7 @@ import vn.edu.iuh.fit.backend.entities.Candidate;
 import vn.edu.iuh.fit.backend.services.imp.CandidateService;
 
 @Component
-public class CandidadateModel {
+public class CandidateModel {
     @Autowired
     private RestTemplate restTemplate;
 
@@ -23,5 +23,8 @@ public class CandidadateModel {
         return restTemplate.getForObject("http://localhost:8080/api/candidates?pageNo=" + pageNo
                         + "&pageSize=" + pageSize,
                 Page.class);
+    }
+    public Integer countCandidates() {
+        return candidateServices.countCandidates();
     }
 }

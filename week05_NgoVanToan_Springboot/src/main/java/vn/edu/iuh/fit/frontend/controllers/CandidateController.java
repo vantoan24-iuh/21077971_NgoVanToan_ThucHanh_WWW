@@ -93,7 +93,6 @@ public class CandidateController {
     public String addCandidate(@ModelAttribute("candidate") Candidate candidate,
                                @ModelAttribute("address") Address address,
                                @ModelAttribute("experience") Experience experience) {
-        // Khởi tạo danh sách nếu candidateSkills là null
         if (candidate.getCandidateSkills() == null) {
             candidate.setCandidateSkills(new ArrayList<>());
         }
@@ -109,12 +108,12 @@ public class CandidateController {
         // Lưu từng CandidateSkill
         for (CandidateSkill candidateSkill : candidate.getCandidateSkills()) {
             if (candidateSkill.getSkill() != null && candidateSkill.getSkillLevel() != null) { // Kiểm tra null trước khi lưu
-                candidateSkill.setCan(canbyEmail);
+                candidateSkill.setCandidate(canbyEmail);
                 candidateSkillServices.save(candidateSkill);
             }
         }
 
-        experience.setCan(canbyEmail);
+        experience.setCandidate(canbyEmail);
         experienceService.save(experience);
 
         return "redirect:/candidates/list";

@@ -30,4 +30,32 @@ public class CandidateService implements CandidateServiceImp {
     public List<Candidate> findAllNoPage() {
         return candidateRepository.findAll();
     }
+
+    @Override
+    public Candidate getByEmail(String email) {
+        return candidateRepository.findByEmail(email);
+    }
+
+    @Override
+    public Candidate getCandidate(Long id) {
+        return candidateRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Integer countCandidates() {
+        return (int) candidateRepository.count();
+    }
+
+    @Override
+    public Page<Candidate> findCandidatesForJobWithSkillLevel(Long jobId, int pageNo, int pageSize) {
+        PageRequest pageRequest = PageRequest.of(pageNo, pageSize);
+        Page<Candidate> candidate = candidateRepository.findCandidatesForJobWithSkillLevel(jobId, pageRequest);
+        return candidate;
+    }
+
+    @Override
+    public Page<Candidate> findAll(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        return candidateRepository.findAll(pageable);
+    }
 }

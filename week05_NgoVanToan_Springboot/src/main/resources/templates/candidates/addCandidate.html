@@ -35,7 +35,8 @@ C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
                     <label for="email">Email: </label>
                 </div>
                 <div class="col-5 md-4">
-                    <input type="email" name="email" id="email" class="form-control" required="required"  th:field="*{email}">
+                    <input type="email" name="email" id="email" class="form-control" required="required"
+                           th:field="*{email}">
                 </div>
             </div>
 
@@ -105,78 +106,66 @@ C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
                 </div>
             </div>
         </div>
-<!--        <div class="form-group">-->
-<!--            &lt;!&ndash; skill &ndash;&gt;-->
-<!--            <H2>Skill</H2>-->
-<!--            <div class="row p-1">-->
-<!--                <div class="col-3 md-3">-->
-<!--                    <label for="skillType">SkillType: </label>-->
-<!--                </div>-->
-<!--                <div class="col-5 md-4">-->
-<!--                    <select name="skillType" id="skillType">-->
-<!--                        <option value="1">UNSPECIFIC</option>-->
-<!--                        <option value="2">TECHNICAL_SKILL</option>-->
-<!--                        <option value="3">SOFT_SKILL</option>-->
-
-<!--                    </select>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="row p-1">-->
-<!--                <div class="col-3 md-3">-->
-<!--                    <label for="skillLevel">SkillLevel: </label>-->
-<!--                </div>-->
-<!--                <div class="col-5 md-4">-->
-<!--                    <select name="skillLevel" id="skillLevel">-->
-<!--                        <option value="1">MASTER</option>-->
-<!--                        <option value="2">PROFESSIONAL</option>-->
-<!--                        <option value="3">ADVANCED</option>-->
-<!--                        <option value="4">INTERMEDIATE</option>-->
-<!--                        <option value="5">BEGINNER</option>-->
-<!--                    </select>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-        <div class="row" aria-label="Experience">
-            <h3 class="col-sm-1 mt-3">Experience</h3>
-            <div class="row mb-3">
-                <label for="company" class="col-sm-1 col-form-label">Company</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="company" th:field="${experience.companyName}">
+        <div class="row mt-4" aria-label="Skill">
+            <h3 class="col-12 mb-3">Skill</h3>
+            <div class="d-flex flex-wrap gap-3" th:each="skill, indexStat : ${skills}">
+                <div class="form-check" style="width: 25%">
+                    <!-- Đặt tên input để liên kết với candidate.candidateSkills -->
+                    <input class="form-check-input" type="checkbox"
+                           th:field="*{candidateSkills[__${indexStat.index}__].skill}" th:value="${skill.id}">
+                    <label class="form-check-label" th:for="skillId" th:text="${skill.skillName}"></label>
                 </div>
-            </div>
-
-            <div class="row mb-3">
-                <label for="from-date" class="col-sm-1 col-form-label">From Date</label>
-                <div class="col-sm-10">
-                    <input type="date" class="form-control" id="from-date" th:field="${experience.fromDate}">
-                </div>
-            </div>
-
-            <div class="row mb-3">
-                <label for="to-date" class="col-sm-1 col-form-label">To Date</label>
-                <div class="col-sm-10">
-                    <input type="date" class="form-control" id="to-date" th:field="${experience.toDate}">
-                </div>
-            </div>
-            <div class="row mb-3">
-                <label for="role" class="col-sm-1 col-form-label">Role</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="role" th:field="${experience.role}">
-                </div>
-            </div>
-            <div class="row mb-3">
-                <label for="work-desc" class="col-sm-1 col-form-label">Work description</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="work-desc" th:field="${experience.workDescription}">
+                <div>
+                    <select class="form-select" th:field="*{candidateSkills[__${indexStat.index}__].skillLevel}">
+                        <option th:each="type : ${T(vn.edu.iuh.fit.backend.enums.SkillLevel).values()}"
+                                th:value="${type}"
+                                th:text="${type}"></option>
+                    </select>
                 </div>
             </div>
         </div>
-        <div class="form-group">
-            <div class="d-flex gap-3 col-2 mx-auto">
-                <input class="btn btn-primary" type="submit" value="Add Candidate">
-                <a th:href="@{/candidates/list}" class="btn btn-outline-secondary">Cancel</a>
+
+            <div class="row" aria-label="Experience">
+                <h3 class="col-sm-1 mt-3">Experience</h3>
+                <div class="row mb-3">
+                    <label for="company" class="col-sm-1 col-form-label">Company</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="company" th:field="${experience.companyName}">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="from-date" class="col-sm-1 col-form-label">From Date</label>
+                    <div class="col-sm-10">
+                        <input type="date" class="form-control" id="from-date" th:field="${experience.fromDate}">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="to-date" class="col-sm-1 col-form-label">To Date</label>
+                    <div class="col-sm-10">
+                        <input type="date" class="form-control" id="to-date" th:field="${experience.toDate}">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="role" class="col-sm-1 col-form-label">Role</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="role" th:field="${experience.role}">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="work-desc" class="col-sm-1 col-form-label">Work description</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="work-desc" th:field="${experience.workDescription}">
+                    </div>
+                </div>
             </div>
-        </div>
+            <div class="form-group">
+                <div class="d-flex gap-3 col-2 mx-auto">
+                    <input class="btn btn-primary" type="submit" value="Add Candidate">
+                    <a th:href="@{/candidates/list}" class="btn btn-outline-secondary">Cancel</a>
+                </div>
+            </div>
     </form>
 </div>
 </body>

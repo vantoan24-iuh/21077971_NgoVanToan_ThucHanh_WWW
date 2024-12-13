@@ -114,4 +114,4 @@ CREATE TABLE IF NOT EXISTS `skill` (
   `type` tinyint(4) DEFAULT NULL CHECK (`type` between 0 and 2),
   PRIMARY KEY (`skill_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-candidatecandidate
+candidatecandidateexperience

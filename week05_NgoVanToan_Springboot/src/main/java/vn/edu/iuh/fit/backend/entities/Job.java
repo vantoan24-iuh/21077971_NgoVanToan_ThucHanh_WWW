@@ -1,14 +1,21 @@
+
 package vn.edu.iuh.fit.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
 @Entity
+@ToString
+@NoArgsConstructor
 @Table(name = "job")
-public class Job {
+public class Job implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "job_id", nullable = false)
@@ -20,20 +27,23 @@ public class Job {
     @Column(name = "job_name", nullable = false)
     private String jobName;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "com_id")
     private Company company;
 
-    public Job() {
+    @OneToMany(mappedBy = "job", fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    private List<JobSkill> jobSkills;
+
+    public Job(Long id, String jobDesc, String jobName, Company company) {
+        this.id = id;
+        this.jobDesc = jobDesc;
+        this.jobName = jobName;
+        this.company = company;
     }
 
-    @Override
-    public String toString() {
-        return "Job{" +
-                "id=" + id +
-                ", jobDesc='" + jobDesc + '\'' +
-                ", jobName='" + jobName + '\'' +
-                ", company=" + company +
-                '}';
+    public Job(String jobDesc, String jobName, Company company) {
+        this.jobDesc = jobDesc;
+        this.jobName = jobName;
+        this.company = company;
     }
 }

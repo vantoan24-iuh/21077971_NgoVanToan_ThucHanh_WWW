@@ -1,56 +1,53 @@
 package vn.edu.iuh.fit.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
+@Entity
 @Getter
 @Setter
-@Entity
+@NoArgsConstructor @AllArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "experience")
-public class Experience {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Long id;
+public class Experience implements Serializable {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty("exp_id")
+    private long id;
 
-    @Column(name = "toDate")
-    private LocalDate toDate;
-
-    @Column(name = "fromDate")
-    private LocalDate fromDate;
-
-    @Column(name = "companyName", length = 50)
+    @Column(name = "company_name",nullable = false, length = 120)
+    @JsonProperty("company")
     private String companyName;
 
-    @Column(name = "workDescription", length = 50)
-    private String workDescription;
+    @Column(name = "from_date",nullable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonProperty("fromDate")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate fromDate;
 
-    @Column(name = "role", length = 50)
+    @Column(name = "to_date",nullable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonProperty("toDate")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate toDate;
+
+    @Column(name = "role",nullable = false, length = 100)
+    @JsonProperty("role")
     private String role;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @Column(name = "work_desc",nullable = false, length = 400)
+    @JsonProperty("work_desc")
+    private String workDescription;
+
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "can_id")
-    private Candidate can;
-
-    public Experience() {
-    }
-
-    @Override
-    public String toString() {
-        return "Experience{" +
-                "id=" + id +
-                ", toDate=" + toDate +
-                ", fromDate=" + fromDate +
-                ", companyName='" + companyName + '\'' +
-                ", workDescription='" + workDescription + '\'' +
-                ", role='" + role + '\'' +
-                ", can=" + can +
-                '}';
-    }
+    @JsonIgnore
+    private Candidate candidate;
 }
